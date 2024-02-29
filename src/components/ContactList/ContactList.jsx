@@ -1,38 +1,26 @@
-import PropTypes from 'prop-types';
-import {
-  ContactsWrapper,
-  ContactsTitle,
-  ContactsList,
-  ContactEement,
-  DeleteBtn,
-} from './ContactList.styled';
-const ContactList = ({ contacts, handleDelete, children }) => {
-  return (
-    <ContactsWrapper>
-      <ContactsTitle>Contacts</ContactsTitle>
-      {children}
-      <ContactsList>
-        {contacts.map(contact => (
-          <ContactEement key={contact.id} id={contact.id}>
-            {contact.name}: {contact.number}{' '}
-            <DeleteBtn id={contact.id} onClick={() => handleDelete(contact.id)}>
-              Delete
-            </DeleteBtn>
-          </ContactEement>
-        ))}
-      </ContactsList>
-    </ContactsWrapper>
-  );
-};
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Contact from "components/Contact/Contact";
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  handleDelete: PropTypes.func.isRequired,
-};
+class ContactList extends Component {
+    static defaultProps = { contacts: [], filter: "", onClick: () => { } };
+    static propTypes = {
+        contacts: PropTypes.array.isRequired,
+        onClick: PropTypes.func.isRequired,
+    }
+
+    render() {
+        const { contacts, filter, onClick } = this.props;
+        return (
+            <ul>
+                {contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase())).map(filteredContact => {
+                    return (
+                        <Contact key={filteredContact.id} id={filteredContact.id} name={filteredContact.name} number={filteredContact.number} onClick={onClick} />
+                    );
+                })}
+            </ul>
+        )
+    }
+}
+
 export default ContactList;

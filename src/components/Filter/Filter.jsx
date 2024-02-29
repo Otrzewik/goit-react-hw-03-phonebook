@@ -1,16 +1,20 @@
-import PropTypes from 'prop-types';
-import{Label, Input} from './Filter.styled'
-const Filter = ({ filter, handleFilter }) => {
-  return (
-    <Label>
-      Find contacts by name
-      <Input onChange={handleFilter} type="text" name="filter" value={filter} />
-    </Label>
-  );
-};
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import css from "./Filter.module.css";
 
-Filter.propTypes = {
-  filter: PropTypes.string,
-  handleFilter: PropTypes.func.isRequired,
-};
+class Filter extends Component {
+    static defaultProps = { onChange: () => { } };
+    static propTypes = { onChange: PropTypes.func.isRequired };
+
+    render() {
+        const { onChange } = this.props;
+        return (
+            <div className={css.filter}>
+                <label htmlFor="filter">Find contacts by name</label>
+                <input type="text" id="filter" name="filter" onChange={onChange} />
+            </div>
+        );
+    }
+}
+
 export default Filter;
